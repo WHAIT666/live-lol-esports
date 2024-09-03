@@ -1,6 +1,5 @@
-import {Frame} from "./types/detailsLiveTypes";
-
-import {ITEMS_URL} from "../../utils/LoLEsportsAPI"
+import { Frame } from "./types/detailsLiveTypes";
+import { ITEMS_URL } from "../../utils/LoLEsportsAPI";
 
 type Props = {
     participantId: number,
@@ -24,14 +23,10 @@ export function ItemsDisplay({ participantId, lastFrame }: Props) {
         retirando o arauto após 240s
     */
 
-    /*if (!(items.includes(3340) || items.includes(3363) || items.includes(3364))) {
-        items.push(3513); // Supondo que o jogador que não possui ward está com arauto
-    }*/
-
     let trinket = -1;
     const itemsID = Array.from(new Set(items)).sort(sortItems);
 
-    if(itemsID[0] !== undefined && (itemsID[0] === 3340 || itemsID[0] === 3363 || itemsID[0] === 3364)) {
+    if (itemsID[0] !== undefined && (itemsID[0] === 3340 || itemsID[0] === 3363 || itemsID[0] === 3364)) {
         trinket = itemsID.shift() as number;
     }
 
@@ -39,31 +34,30 @@ export function ItemsDisplay({ participantId, lastFrame }: Props) {
         <div className="player-stats-items">
             {[...Array(6)].map((x, i) => {
 
-                if(itemsID[i] !== undefined) {
+                if (itemsID[i] !== undefined) {
                     return (
-                        <div className="player-stats-item">
-                            <img src={`${ITEMS_URL}${itemsID[i]}.png`}/>
+                        <div key={`item-${i}`} className="player-stats-item">
+                            <img src={`${ITEMS_URL}${itemsID[i]}.png`} alt={`Item ${itemsID[i]}`} />
                         </div>
                     )
-                }else{
+                } else {
                     return (
-                        <div className="player-stats-item"/>
+                        <div key={`item-empty-${i}`} className="player-stats-item" />
                     )
                 }
 
             })
             }
 
-
             {trinket !== -1 ?
                 (
-                    <div className="player-stats-item">
-                        <img src={`${ITEMS_URL}${trinket}.png`}/>
+                    <div className="player-stats-item" key={`trinket-${trinket}`}>
+                        <img src={`${ITEMS_URL}${trinket}.png`} alt={`Trinket ${trinket}`} />
                     </div>
                 )
                 :
                 (
-                    <div className="player-stats-item"/>
+                    <div key="empty-trinket" className="player-stats-item" />
                 )
             }
 
@@ -79,8 +73,8 @@ export function ItemsDisplay({ participantId, lastFrame }: Props) {
  */
 
 const sortItems = (a: number, b: number) => { // (3364, 3363, 3340) id das wards | 3513 id do arauto
-    if(a === 3364 || a === 3363 || a === 3340 || a === 3513) return -1;
-    if(b === 3364 || b === 3363 || b === 3340 || a === 3513) return 1;
+    if (a === 3364 || a === 3363 || a === 3340 || a === 3513) return -1;
+    if (b === 3364 || b === 3363 || b === 3340 || a === 3513) return 1;
 
     //return (a > b ? 1 : -1);
     return b - a;
